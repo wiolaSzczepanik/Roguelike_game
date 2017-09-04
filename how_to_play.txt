@@ -1,0 +1,8 @@
+ HOW TO PLAY:
+----------------------------------------------------
+ Your hero is:  @
+ You can move : 
+		key "W"-- up
+		key "A"-- left
+		key "D"-- right
+		key "S"-- down
