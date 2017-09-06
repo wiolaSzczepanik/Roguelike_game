@@ -46,6 +46,37 @@ def timechecker():
     return datetime.datetime.now()
 
 
+def import_statistics(statistics, filename=None):
+    if filename:
+        with open(filename) as statistics:
+            statistics = list(statistics)
+
+    for element in statistics:
+        statistics = statistics.strip('\n')
+        statistics = statistics.split(",")
+
+    for stat in statistics:
+        if stat in statistics:
+            statistics[stat] += 1
+        else:
+            inventory[item] = 1
+
+    return inventory
+
+
+# def export_inventory(inventory, filename="export_inventory.csv"):
+#     if filename:
+#         x = open(filename, "w")
+#     else:
+#         x = open("export_inventory.csv", "w")
+#
+#     b = [(i[0]+",")*i[1] for i in inventory.items()]
+#     b[-1] = b[-1][:-1]
+#     for item in b:
+#         x.write(item)
+#     x.close()
+
+
 def move(board, y, x, exit_y, exit_x):
     live = 100 # dorobic import
     statistic = {"atak" :10, "obrona": 3, "wiedza": 5, "ww" : 55} # dorobic import
