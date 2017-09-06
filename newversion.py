@@ -116,20 +116,44 @@ def level(board, y, x, live, statistic):
     move_hero(board, player, y, x, statistic, live)
 
 
-def rock_item_gather(board, statistic, y, x, live):
+def item_gather(board, statistic, y, x, live):
+    pos = board[y][x]
     player = '\033[1;34m@\033[1;m'
     board[y][x] = player
 
     old_player = "."
     board[y-1][x] = old_player
 
-    statistic_of_gather_item = {"ww": 10}
+    print(player)
+
+    if pos == "R":
+        statistic_of_gather_item = {"ww": 10}
     print_board(board, live, statistic)
+    if pos == "F":
+        statistic_of_gather_item = {"obrona": 5}
+    print_board(board, live, statistic)
+
+
 
     for item in statistic_of_gather_item:
         if item in statistic:
             statistic[item] += statistic_of_gather_item[item]
     return statistic
+
+# def fire_item_gather(board, statistic, y, x, live):
+#     player = '\033[1;34m@\033[1;m'
+#     board[y][x] = player
+#
+#     old_player = "."
+#     board[y-1][x] = old_player
+#
+#     statistic_of_gather_item = {"obrona": 5}
+#     print_board(board, live, statistic)
+#
+#     for item in statistic_of_gather_item:
+#         if item in statistic:
+#             statistic[item] += statistic_of_gather_item[item]
+#     return statistic
 
 def move_hero(board, player, y, x, statistic, live):
     old_player = "."
@@ -164,19 +188,20 @@ def move_hero(board, player, y, x, statistic, live):
 
         if board[y][x] != "." and board[y][x] != "R" and board[y][x] != "F" and board[y][x] != "T":
             print("Auc! Nabiles sobie guza!")
+
             x = old_x
             y = old_y
             continue
         elif board[y][x] == "R":
-            rock_item_gather(board, statistic, 13, 59, live)
+            item_gather(board, statistic, 13, 59, live)
+        elif board[y][x] == "F":
+            item_gather(board, statistic, 3, 40, live)
+
+
 
         board[y][x] = player
         board[old_y][old_x] = old_player
         print_board(board, live, statistic)
-
-
-
-
 
 
 def getch():
