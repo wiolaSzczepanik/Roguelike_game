@@ -99,20 +99,39 @@ def import_board(level):
         return board
 
 
-def print_board(board):
+def print_board(board, live, statistic):
     os.system('clear')
     for row in board:
         print("".join(row))
+    print("HP: " + str(live))
+    for skill in statistic:
+        print(skill, statistic[skill], "   ", end="")
+    print("")
 
 
-def level(board, y, x):
+def level(board, y, x, live, statistic):
     player = "@"
     board[y][x] = player
-    print_board(board)
-    move_hero(board, player, y, x)
+    print_board(board, live, statistic)
+    move_hero(board, player, y, x, statistic, live)
 
 
-def move_hero(board, player, y, x):
+def rock_item_gather(board, statistic, y, x, live):
+    player = '\033[1;34m@\033[1;m'
+    board[y][x] = player
+
+    old_player = "."
+    board[y-1][x] = old_player
+
+    statistic_of_gather_item = {"ww": 10}
+    print_board(board, live, statistic)
+
+    for item in statistic_of_gather_item:
+        if item in statistic:
+            statistic[item] += statistic_of_gather_item[item]
+    return statistic
+
+def move_hero(board, player, y, x, statistic, live):
     old_player = "."
     old_y = y
     old_x = x
@@ -148,11 +167,12 @@ def move_hero(board, player, y, x):
             x = old_x
             y = old_y
             continue
-        # elif board[y][x] == "F":
+        elif board[y][x] == "R":
+            rock_item_gather(board, statistic, 13, 59, live)
 
         board[y][x] = player
         board[old_y][old_x] = old_player
-        print_board(board)
+        print_board(board, live, statistic)
 
 
 
@@ -175,9 +195,13 @@ def timechecker():
 
 
 def main():
+    live = 100
+    statistic = {"atak": 10, "obrona": 3, "wiedza": 5, "ww": 55}  # dorobic import
+
+
     intro_title_game("title_game.txt")
     game_menu()
     pick_game_mode()
-    level(import_board("firstlevel.csv"), 1, 61)
+    level(import_board("firstlevel.csv"), 1, 61, live, statistic)
 
 main()
