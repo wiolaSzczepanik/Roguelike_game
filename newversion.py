@@ -99,40 +99,35 @@ def import_board(level):
         return board
 
 
-def print_board(board, live, statistic):
+def print_board(board):
     os.system('clear')
     for row in board:
         print("".join(row))
-    print("HP: " + str(live))
-    for skill in statistic:
-        print(skill, statistic[skill], "   ", end="")
-    print("")
 
 
-def level(board, y, x, live, statistic):
+def level(board, y, x):
     player = "@"
     board[y][x] = player
-    print_board(board, live, statistic)
-    move_hero(board, player, y, x, statistic, live)
+    print_board(board)
+    move_hero(board, player, y, x)
 
 
-def item_gather(board, statistic, y, x, live):
+def item_gather(board, y, x):
     pos = board[y][x]
     player = '\033[1;34m@\033[1;m'
     board[y][x] = player
-
+    statistic = import_statistics("hero_stats.csv")
     old_player = "."
     board[y-1][x] = old_player
 
     print(player)
 
     if pos == "R":
-        statistic_of_gather_item = {"ww": 10}
-    print_board(board, live, statistic)
+        statistic_of_gather_item = {"ww": 5}
+    print_board(board)
     if pos == "F":
-        statistic_of_gather_item = {"obrona": 5}
-    print_board(board, live, statistic)
-
+        statistic_of_gather_item = {"defence": 2}
+    print_board(board)
 
 
     for item in statistic_of_gather_item:
@@ -140,22 +135,8 @@ def item_gather(board, statistic, y, x, live):
             statistic[item] += statistic_of_gather_item[item]
     return statistic
 
-# def fire_item_gather(board, statistic, y, x, live):
-#     player = '\033[1;34m@\033[1;m'
-#     board[y][x] = player
-#
-#     old_player = "."
-#     board[y-1][x] = old_player
-#
-#     statistic_of_gather_item = {"obrona": 5}
-#     print_board(board, live, statistic)
-#
-#     for item in statistic_of_gather_item:
-#         if item in statistic:
-#             statistic[item] += statistic_of_gather_item[item]
-#     return statistic
 
-def move_hero(board, player, y, x, statistic, live):
+def move_hero(board, player, y, x):
     old_player = "."
     old_y = y
     old_x = x
@@ -188,20 +169,17 @@ def move_hero(board, player, y, x, statistic, live):
 
         if board[y][x] != "." and board[y][x] != "R" and board[y][x] != "F" and board[y][x] != "T":
             print("Auc! Nabiles sobie guza!")
-
             x = old_x
             y = old_y
             continue
         elif board[y][x] == "R":
-            item_gather(board, statistic, 13, 59, live)
+            item_gather(board, 13, 59)
         elif board[y][x] == "F":
-            item_gather(board, statistic, 3, 40, live)
-
-
+            item_gather(board, 3, 40)
 
         board[y][x] = player
         board[old_y][old_x] = old_player
-        print_board(board, live, statistic)
+        print_board(board)
 
 
 def getch():
@@ -219,14 +197,43 @@ def timechecker():
     return datetime.datetime.now()
 
 
+def import_statistics(filename=None):
+    stats = {}
+    if filename:
+        with open(filename) as text:
+            text = list(text)
+            for element in text:
+                element = element.strip("\n")
+                element = element.split(",")
+
+            for item in element:
+                if item in stats:
+                    stats[item] += 1
+                else:
+                    stats[item] = 1
+
+            return stats
+
+
+def export_stats(statistics, filename=None):
+    if filename:
+        with open(filename, "w") as save:
+            stat_to_save = [(element[0]+",")*element[1] for element in statistics.items()]
+            stat_to_save[-1] = stat_to_save[-1][:-1]
+
+            for stat in stat_to_save:
+                save.write(stat)
+
+
 def main():
-    live = 100
-    statistic = {"atak": 10, "obrona": 3, "wiedza": 5, "ww": 55}  # dorobic import
-
-
+    stats = {"live": 100, "attack": 3, "defence": 3, "ww": 25}
+    export_stats(stats, "hero_stats.csv")
+    enemy_stats = {"live" : 20, "attack" : 5, "defence" : 5, "ww" : 35}
+    export_stats(enemy_stats, "enemy_stats.csv")
     intro_title_game("title_game.txt")
     game_menu()
     pick_game_mode()
-    level(import_board("firstlevel.csv"), 1, 61, live, statistic)
+    level(import_board("firstlevel.csv"), 1, 61)
+
 
 main()
