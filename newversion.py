@@ -127,6 +127,7 @@ def item_gather(board, y, x):
     print_board(board)
     if pos == "F":
         statistic_of_gather_item = {"defence": 2}
+    import_statistics()
     print_board(board)
 
     for item in statistic_of_gather_item:
