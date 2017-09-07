@@ -105,11 +105,11 @@ def print_board(board):
         print("".join(row))
 
 
-def level(board, y, x):
+def level(board, y, x, exit_y, exit_x):
     player = "@"
     board[y][x] = player
     print_board(board)
-    move_hero(board, player, y, x)
+    move_hero(board, player, y, x, exit_y, exit_x)
 
 
 def item_gather(board, y, x):
@@ -123,33 +123,41 @@ def item_gather(board, y, x):
     print(player)
 
     if pos == "R":
-        statistic_of_gather_item = {"ww": 5}
+        statistic_of_gather_item = {"ws": 5}
     print_board(board)
     if pos == "F":
         statistic_of_gather_item = {"defence": 2}
     print_board(board)
 
-
     for item in statistic_of_gather_item:
         if item in statistic:
             statistic[item] += statistic_of_gather_item[item]
-    return statistic
+
+    export_stats(statistic, "hero_stats.csv")
 
 
-def move_hero(board, player, y, x):
+def print_statistics(statistics):
+    stats = import_statistics(statistics)
+    print("Hero: @\n")
+    for k, v in stats.items():
+        print("{0} : {1}".format(k, v))
+
+
+def move_hero(board, player, y, x, exit_y, exit_x):
     old_player = "."
     old_y = y
     old_x = x
     board[y][x] = player
-
-    while True:
+    stats = import_statistics("hero_stats.csv")
+    enemy_stats = import_statistics("enemy_stats.csv")
+    while board[exit_y][exit_x] != player:
         key = getch()
 
         if key == "q":
             exit()
         if key == "i":
-            pass
-
+            print_statistics("hero_stats.csv")
+            time.sleep(3)
         if key == "w":
             y -= 1
             old_y = y + 1
@@ -167,7 +175,7 @@ def move_hero(board, player, y, x):
             old_x = x - 1
             old_y = y
 
-        if board[y][x] != "." and board[y][x] != "R" and board[y][x] != "F" and board[y][x] != "T":
+        if board[y][x] != "." and board[y][x] != "R" and board[y][x] != "F" and board[y][x] != "T" and board[y][x] != player:
             print("Auc! Nabiles sobie guza!")
             x = old_x
             y = old_y
@@ -176,6 +184,9 @@ def move_hero(board, player, y, x):
             item_gather(board, 13, 59)
         elif board[y][x] == "F":
             item_gather(board, 3, 40)
+        elif board[y][x] == "T":
+            fight.fight(stats, enemy_stats)
+
 
         board[y][x] = player
         board[old_y][old_x] = old_player
@@ -226,14 +237,22 @@ def export_stats(statistics, filename=None):
 
 
 def main():
-    stats = {"live": 100, "attack": 3, "defence": 3, "ww": 25}
+    stats = {"live": 100, "attack": 5, "defence": 3, "ws": 55}
     export_stats(stats, "hero_stats.csv")
-    enemy_stats = {"live" : 20, "attack" : 5, "defence" : 5, "ww" : 35}
+    enemy_stats = {"live" : 20, "attack" : 5, "defence" : 5, "ws" : 35}
     export_stats(enemy_stats, "enemy_stats.csv")
     intro_title_game("title_game.txt")
     game_menu()
     pick_game_mode()
-    level(import_board("firstlevel.csv"), 1, 61)
+    time_start = timechecker()
+    level(import_board("firstlevel.csv"), 1, 61, 0, 5)
+    level(import_board("secondlevel.csv"), 16, 67, 4, 0)
+    time_stop = timechecker()
+    player_time = time_stop - time_start
+    player_time = str(player_time)
+    print("Twoj czas to:" + player_time[:7])
+    time.sleep(3)
 
 
-main()
+if __name__ == '__main__':
+    main()

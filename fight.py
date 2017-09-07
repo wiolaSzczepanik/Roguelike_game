@@ -2,19 +2,16 @@ import os
 from random import randint
 import time
 
-#live = 100
-#skills = {"atak" : 15, "obrona" : 5, "ww" : 85}
-
-#enemy_live = 100
-#enemy_skills = {"atak" : 5, "obrona" : 5, "ww" : 35}
 
 def throw_dice(od, do):
     random = randint(od, do)
     return random
 
-def fight(live, skills, enemy_live, enemy_skills):
-    akcja = "a - atak\nb - czekaj(ww + 5)"
-    ww = skills["ww"]
+def fight(skills, enemy_skills):
+    action = "a - atakujesz\nb - czekasz(ws + 5)"
+    ws = skills['ws']
+    live = skills['live']
+    enemy_live = enemy_skills['live']
     os.system('clear')
     print("Zostales zaatakowany! Przeciwnik rzuca sie na ciebie ale w ostatniej chwili")
     print("zdolales uniknac ciosu!")
@@ -24,29 +21,29 @@ def fight(live, skills, enemy_live, enemy_skills):
         print("Twoj ruch. Wybierz co robisz:")
         s = ""
         while s != "a" and s != "b":
-            s = input(akcja)
+            s = input(action)
         if s == "a":
             print("Atakujesz")
-            rzut = throw_dice(1, 100)
-            print(ww, rzut)
-            if rzut <= ww:
-                enemy_live = enemy_live - (skills["atak"] + throw_dice(1, 6) - enemy_skills["obrona"])
+            throw = throw_dice(1, 100)
+            print(ws, throw)
+            if throw <= ws:
+                enemy_live = enemy_live - (skills["attack"] + throw_dice(1, 6) - enemy_skills["defence"])
                 print("Trafiles. Zostalo {0:d} zycia.".format(enemy_live))
-                ww = skills["ww"]
+                ww = skills["ws"]
             else:
                 print("Nie trafiles")
-                ww = skills["ww"]
+                ws = skills["ws"]
         if s == "b":
             print("Zbierasz sily")
-            ww += 5
-            print("Twoja umiejetnosc walki wzrasta do {0:d}".format(ww))
+            ws += 5
+            print("Twoja umiejetnosc walki wzrasta do {0:d}".format(ws))
         time.sleep(2)
         os.system('clear')
         if enemy_live > 0:
             print("Przeciwnik atakuje")
-            rzut = throw_dice(1, 100)
-            if rzut <= enemy_skills["ww"]:
-                live = live - (enemy_skills["atak"] + throw_dice(1, 6) - skills["obrona"])
+            throw = throw_dice(1, 100)
+            if throw <= enemy_skills["ws"]:
+                live = live - (enemy_skills["attack"] + throw_dice(1, 6) - skills["defence"])
                 print("Trafil. Zostalo {0:d} zycia.".format(live))
             else:
                 print("Nie trafil")
@@ -54,13 +51,22 @@ def fight(live, skills, enemy_live, enemy_skills):
         else:
             print("Przeciwnik pada na ziemie!")
 
+    export_stats(skills, "hero_stats.csv")
+
     if live <= 0:
         print("Zmarles w okropnych meczarniach!")
+        exit()
         # game over
     if enemy_live <= 0:
         print("Jestes dobry w zabijaniu!")
         time.sleep(3)
-    return live
 
 
-#fight(live, skills, 20, enemy_skills)
+def export_stats(statistics, filename=None):
+    if filename:
+        with open(filename, "w") as save:
+            stat_to_save = [(element[0]+",")*element[1] for element in statistics.items()]
+            stat_to_save[-1] = stat_to_save[-1][:-1]
+
+            for stat in stat_to_save:
+                save.write(stat)
