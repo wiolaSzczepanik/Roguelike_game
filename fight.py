@@ -2,13 +2,21 @@ import os
 from random import randint
 import time
 
+def print_title(filename):
+    game_title = open(filename, "r")
+    print_game_name = game_title.read()
+    print(print_game_name)
+    time.sleep(1.0)
+    os.system('clear')
+    game_title.close()
+
 
 def throw_dice(od, do):
     random = randint(od, do)
     return random
 
 def fight(skills, enemy_skills):
-    action = "a - atakujesz\nb - czekasz(ws + 5)"
+    action = "a - atakujesz\nb - czekasz(ws + 5)\n"
     ws = skills['ws']
     live = skills['live']
     enemy_live = enemy_skills['live']
@@ -18,7 +26,7 @@ def fight(skills, enemy_skills):
     time.sleep(3)
     while live > 0 and enemy_live > 0:
         os.system('clear')
-        print("Twoj ruch. Wybierz co robisz:")
+        print("Twoj ruch. Wybierz co robisz: ")
         s = ""
         while s != "a" and s != "b":
             s = input(action)
@@ -55,8 +63,9 @@ def fight(skills, enemy_skills):
 
     if live <= 0:
         print("Zmarles w okropnych meczarniach!")
+        print_title("game_over.txt")
         exit()
-        # game over
+
     if enemy_live <= 0:
         print("Jestes dobry w zabijaniu!")
         time.sleep(3)
