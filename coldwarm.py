@@ -1,62 +1,63 @@
 import random
+import game
 
-def choose_number():
-    count = 0
-    digit_list = []
 
-    while count < 3:
-        digit = random.randint(0,9)
-        if digit in digit_list:
-            continue
-        else:
-            digit_list.append(str(digit))
-            count += 1
-    print(digit_list)
-    return digit_list
+def get_random_digits():
+    correct_answer = []
+    while len(correct_answer) < 3:
+        digit = random.randint(0, 9)
+        if digit not in correct_answer:
+            correct_answer.append(digit)
+    return correct_answer
 
-def input_user():
 
+def get_user_input():
     while True:
-        number = input("Pick a number: ")
-        try:
-            int(number)
-            if len(number) != 3:
-                raise ValueError
-        except ValueError:
-            print("Input has to be tree digits integer. Try again.")
+        user_guess = input("Enter number: ")
+        if user_guess.isalpha():
+            print("Enter only digits")
+        elif len(user_guess) != 3:
+            print("You have to enter exactly 3 digits!")
         else:
-            break
+            return list(user_guess)
 
-    return number
 
-def compar_numbers(digit_list, digit_number):
-    hot = 0
-    warm = 0
+def compare_user_input_with_answer(user_guess, correct_answer):
+    index = 0
+    hint_list = []
+    for a in correct_answer:
+        if str(a) == user_guess[index]:
+            hint_list.insert(0, 'HOT')
+        elif str(a) in user_guess:
+            hint_list.append("WARM")
+        index += 1
+    if not hint_list:
+        hint_list.append("COLD")
 
-    for i in range(len(digit_list)):
-        if digit_list[i] == digit_number[i]:
-            hot += 1
-            print("hot")
-    for i in range(len(digit_list)):
-        if digit_list[i] == digit_number[i]:
-            continue
-        elif digit_number[i] in digit_list:
-            warm += 1
-            print("warm")
+    return hint_list
 
-    if hot == 3:
-        pass
-    elif warm == 0 and hot == 0:
-        print("Cold")
 
-    return hot
+def check_result(hint_list):
+    if hint_list == ["HOT"] * 3:
+        return True
 
 
 def main():
-    digit_list = choose_number()
-    while True:
-        digit_number = input_user()
-        hot = compar_numbers(digit_list, digit_number)
-        if hot == 3:
-            print("Win")
+    correct_answer = get_random_digits()
+    tries_left = 10
+
+    while tries_left > 0:
+        
+        user_guess = get_user_input()
+        result = compare_user_input_with_answer(user_guess, correct_answer)
+        print(result)
+        if check_result(result):
+            print("WIN")
             break
+        tries_left -= 1
+    if tries_left == 0:
+        game.print_title("game_over.txt")
+	exit()
+
+if __name__ == '__main__':
+    main()
