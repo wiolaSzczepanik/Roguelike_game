@@ -64,7 +64,7 @@ def creation_screen():
     name_player = input("Jak na imie ma Twój bohater: " + '\n')
     player_character = input("Wybierz dowolny znak jakim chcesz grać : " + '\n')
 
-    while len(player_character) > 1:
+    while len(player_character) != 1:
         print("Wybierzy tylko jeden znak!")
         player_character = input("Wybierz dowolny znak jakim chcesz grać : " + '\n')
 
