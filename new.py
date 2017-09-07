@@ -243,15 +243,14 @@ def export_stats(statistics, filename=None):
 def highscore(time):
     name = input("What's your name:")
     print("Player name:" + " " * 5 + "Time:")
-    # highscore = import("highscore.csv")
-    highscore = {"b": 5, "s": 7, "k": 6}
+    highscore = import("highscore.csv")
     highscore[name] = time
     rank = 1
     for k, v in sorted(highscore.items(), key=itemgetter(1)):
         print(str(rank).rjust(2),k.rjust(10)+" : " + str(v).rjust(8))
         rank += 1
 
-
+    export_highscore("highscore.csv")
 
 
 

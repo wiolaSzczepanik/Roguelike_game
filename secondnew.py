@@ -121,8 +121,8 @@ def print_board(board):
         print("".join(row))
 
 
-def level(board, y, x, exit_y, exit_x, player="@"):
-    player_character = creation_screen()
+def level(board, y, x, exit_y, exit_x, player_character):
+
     player = player_character
     board[y][x] = player
     print_board(board)
@@ -269,9 +269,6 @@ def highscore(time):
         rank += 1
 
 
-
-
-
 def main():
     stats = {"live": 100, "attack": 5, "defence": 3, "ws": 55}
     export_stats(stats, "hero_stats.csv")
@@ -280,9 +277,10 @@ def main():
     print_title("title_game.txt")
     game_menu()
     pick_game_mode()
+    player_character = creation_screen()
     time_start = timechecker()
-    level(import_board("firstlevel.csv"), 1, 61, 0, 5)
-    level(import_board("secondlevel.csv"), 16, 67, 13, 21)
+    level(import_board("firstlevel.csv"), 1, 61, 0, 5, player_character)
+    level(import_board("secondlevel.csv"), 16, 67, 12, 20, player_character)
     time_stop = timechecker()
     player_time = time_stop - time_start
     player_time = str(player_time)
