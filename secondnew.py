@@ -257,16 +257,36 @@ def export_stats(statistics, filename=None):
                 save.write(stat)
 
 
+def export_highscore(filename, highscore):
+    with open(filename, "a") as f:
+        for k, v in highscore.items():
+            f.write(k +"|"+ str(v) + "\n")
+
+
+def import_highscore(filename):
+    highscore = {}
+    with open(filename) as text:
+        text = list(text)
+        text_list = []
+        for element in text:
+            text_list.append(element.strip("\n").split("|"))
+
+        for line in text_list:
+            highscore[line[0]] = float(line[1])
+
+        return highscore
+
+
 def highscore(time):
     name = input("What's your name:")
     print("Player name:" + " " * 5 + "Time:")
-    # highscore = import("highscore.csv")
-    highscore = {"b": 5, "s": 7, "k": 6}
+    highscore = import_highscore("highscore.csv")
     highscore[name] = time
     rank = 1
     for k, v in sorted(highscore.items(), key=itemgetter(1)):
         print(str(rank).rjust(2),k.rjust(10)+" : " + str(v).rjust(8))
         rank += 1
+    export_highscore("highscore.csv", highscore)
 
 
 def main():

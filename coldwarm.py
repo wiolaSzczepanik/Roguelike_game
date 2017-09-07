@@ -47,7 +47,7 @@ def main():
     tries_left = 10
 
     while tries_left > 0:
-        
+
         user_guess = get_user_input()
         result = compare_user_input_with_answer(user_guess, correct_answer)
         print(result)
@@ -57,7 +57,4 @@ def main():
         tries_left -= 1
     if tries_left == 0:
         game.print_title("game_over.txt")
-	exit()
-
-if __name__ == '__main__':
-    main()
+        exit()
