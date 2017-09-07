@@ -1,8 +1,16 @@
- HOW TO PLAY:
+ JAK MOŻNA GRAĆ:
 ----------------------------------------------------
- Your hero is:  @
- You can move : 
-		key "W"-- up
-		key "A"-- left
-		key "D"-- right
-		key "S"-- down
+ Twój domyslny znak bohatera:  @
+ Mechanika gry : 
+		klawisz "W"-- w górę
+		klawisz "A"-- w lewo
+		klawisz "D"-- w prawo
+		klawisz "S"-- w dół
+
+Atrybuty do zebrania:
+		"R" --> kamien, +2 do obrony
+		"F" --> ogień, +5 do walki
+
+Opcje dodatkowe:
+		"I" --> wyświetlenie statystyk
+		"Q" --> zakończenie gry

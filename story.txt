@@ -1,14 +1,12 @@
- The game shows the journey of beginner programmer. Every bug
- found on our way is a mortal enemy which we must destroy. We,
- who set the first steps in this world have to go this journey 
- alone. Each defeated problem helps us to become a better 
- programmer. We can count on a more experienced programmer, 
- but we must deserve it. 
+ Gra przedstawia podroz kazdego poczatkujacego programisty. 
+ Musimy pokonać przeszokdy na naszej drodze. Na kazdym poziomie
+ czeka na Ciebie wielki wrog, ktorego musisz pokonac aby zdobyc 
+ doświadczenie 
 
- Come... take this trip with us.
+ Zaczynamy...
 ______________________________________________________________
 --------------------------------------------------------------
-	   GAME MADE BY ADRIAN AND WIOLA	2017
+	   GAME MADE BY ADRIAN AND WIOLA	CC_2017
 ______________________________________________________________
 --------------------------------------------------------------
 
